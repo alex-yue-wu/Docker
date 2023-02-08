@@ -19,6 +19,8 @@ RUN yum -y --security update && \
     yum clean all && \
     rm -rf /var/cache/yum
 
+RUN amazon-linux-extras install R3.4
+
 ENV PATH /opt/conda/bin:$PATH
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py39_4.12.0-Linux-x86_64.sh -O ~/miniconda.sh && \
     /bin/bash ~/miniconda.sh -b -p /opt/conda && \
@@ -35,6 +37,8 @@ RUN conda config --add channels bioconda && \
     conda install -y picard=2.27.4 && \
     conda install -y samtools && \
     conda install -y fastp
+
+RUN R -e "install.packages(c('tidyverse', 'glue'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
 
 # Basespace CLI
 RUN wget "https://launch.basespace.illumina.com/CLI/latest/amd64-linux/bs" -O /opt/bs && \
