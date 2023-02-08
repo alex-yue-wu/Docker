@@ -1,0 +1,32 @@
+FROM continuumio/miniconda3:22.11.1
+
+RUN apt-get update && \
+    apt-get install -y \
+    wget \
+    tar \
+    gzip \
+    curl \
+    git \
+    # which \
+    locate \
+    zip \
+    # gcc-gfortran \
+    # gcc-c++ \
+    # readline-devel \
+    # ncurses-compat-libs \
+    build-essential \
+    libz-dev \
+    procps \
+    ;
+
+
+RUN conda config --add channels bioconda && \
+    conda config --add channels conda-forge && \
+    conda config --add channels defaults
+
+ENV CONDA_SUBDIR=osx-64
+
+RUN conda install -y -c bioconda picard
+
+RUN conda install -y bwa=0.7.17 && \
+    conda install -y samtools=1.13
